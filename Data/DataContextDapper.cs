@@ -9,15 +9,15 @@ namespace DotNetAPI.Data
         private readonly IConfiguration _config;
         public DataContextDapper(IConfiguration config)
         {
-            _config=config;
+            _config = config;
         }
 
-        public IEnumerable<T> LoadData <T>(string sql)
+        public IEnumerable<T> LoadData<T>(string sql)
         {
             IDbConnection dbConnection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
             return dbConnection.Query<T>(sql);
         }
-        public T LoadDataSingle <T>(string sql)
+        public T LoadDataSingle<T>(string sql)
         {
             IDbConnection dbConnection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
             return dbConnection.QuerySingle<T>(sql);
@@ -33,6 +33,25 @@ namespace DotNetAPI.Data
         {
             IDbConnection dbConnection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
             return dbConnection.Execute(sql);
+        }
+        public bool ExecuteSqlWithParameters(string sql, List<SqlParameter> parameters)
+        {
+            SqlCommand commandWithParams = new SqlCommand(sql);
+
+            foreach (SqlParameter sqlParameter in parameters)
+            {
+                commandWithParams.Parameters.Add(sqlParameter);
+            }
+            SqlConnection dbConnection = new SqlConnection(_config.GetConnectionString("DefaultConnection"));
+            dbConnection.Open();
+
+            commandWithParams.Connection = dbConnection;
+
+            int rowsAffected = commandWithParams.ExecuteNonQuery();
+            
+            dbConnection.Close();
+
+            return rowsAffected > 0;
         }
     }
 }
