@@ -1,34 +1,20 @@
-namespace DotNetAPI.DTO {
-    public partial class UserForRegistrationDto
+namespace DotnetAPI.Models
+{
+    public partial class UserComplete
     {
-        public string Email {set; get;}
-
-        public string Password {set; get;}
-
-        public string PasswordConfirm {set; get;}
-
+        public int UserId {get; set;}
         public string FirstName {get; set;}
         public string LastName {get; set;}
+        public string Email {get; set;}
         public string Gender {get; set;}
-
+        public bool Active {get; set;}
         public string JobTitle {get; set;}
         public string Department {get; set;}
         public decimal Salary {get; set;}
+        public decimal AvgSalary {get; set;}
 
-        public UserForRegistrationDto()
+        public UserComplete()
         {
-            if (Email == null)
-            {
-                Email = "";
-            }
-            if (Password == null)
-            {
-                Password = "";
-            }
-            if (PasswordConfirm == null)
-            {
-                PasswordConfirm = "";
-            }
             if (FirstName == null)
             {
                 FirstName = "";
@@ -36,6 +22,10 @@ namespace DotNetAPI.DTO {
             if (LastName == null)
             {
                 LastName = "";
+            }
+            if (Email == null)
+            {
+                Email = "";
             }
             if (Gender == null)
             {
