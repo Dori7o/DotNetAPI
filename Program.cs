@@ -1,4 +1,7 @@
+using System.Text;
 using DotNetAPI.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +32,21 @@ builder.Services.AddCors((options) =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+string? tokenKeyString = builder.Configuration.GetSection("AppSetting:TokenKey").Value;
+ 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options => {
+        options.TokenValidationParameters = new TokenValidationParameters() 
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+                    tokenKeyString != null ? tokenKeyString : ""
+                )),
+                ValidateIssuer = false,
+                ValidateAudience = false
+            };
+        });
+
 var app = builder.Build();
 
 
@@ -45,6 +63,8 @@ else
     app.UseCors("ProdCors");
     app.UseHttpsRedirection();
 }
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

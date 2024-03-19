@@ -1,5 +1,5 @@
 namespace DotNetAPI.DTO {
-    public partial class UserForResgistrationDto
+    public partial class UserForRegistrationDto
     {
         public string Email {set; get;}
 
@@ -11,7 +11,7 @@ namespace DotNetAPI.DTO {
         public string LastName {get; set;}
         public string Gender {get; set;}
 
-        public UserForResgistrationDto()
+        public UserForRegistrationDto()
         {
             if (Email == null)
             {

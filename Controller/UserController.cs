@@ -3,7 +3,8 @@ using DotNetAPI.DTO;
 using DotNetAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DotNetAPI.Controller;
+namespace DotNetAPI.Controller
+{
 
 [ApiController]
 [Route("[controller]")]
@@ -34,7 +35,7 @@ public class UserController : ControllerBase
     public User GetSingleUser(int userID)
     {
 
-        return _dapper.LoadDataSingle<User>("SELECT * FROM TutorialAppSchema.Users WHERE userID=@userID");
+        return _dapper.LoadDataSingle<User>("SELECT * FROM TutorialAppSchema.Users WHERE userID=" + userID.ToString());
     }
     [HttpPut("EditUser")]
     public IActionResult EditUser(User user)
@@ -100,4 +101,5 @@ public class UserController : ControllerBase
 
         throw new Exception("Failed to Delete User");
     }
+}
 }
